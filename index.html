@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hidden Gem Finder</title>
+  <link rel="stylesheet" href="styles restoran.css">
+  <style>
+    /* Inline styles for uploaded info (specific to this page) */
+    .uploaded-info {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #fff7e6;
+      border: 1px solid #ffcc80;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .uploaded-info h2 {
+      margin-top: 0;
+      color: #e67e22;
+    }
+    .uploaded-image {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .delete-button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .delete-button:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Hidden Gem Finder</h1>
+      <p>Discover and share your favorite food spots!</p>
+    </div>
+    <a href="compose page restoran.html" class="compose-button">Compose</a>
+
+    <!-- Section to display uploaded info -->
+    <div id="uploadedContainer"></div>
+  </div>
+
+  <script>
+    // Load and display uploaded information from localStorage
+    window.onload = function() {
+      const uploadedItems = JSON.parse(localStorage.getItem('uploadedItems')) || [];
+      const container = document.getElementById('uploadedContainer');
+
+      uploadedItems.forEach((item, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('uploaded-info');
+
+        itemDiv.innerHTML = `
+          <h2>${item.name}</h2>
+          <img src="${item.image}" class="uploaded-image" alt="${item.name}" />
+          <p><strong>Location:</strong> ${item.location}</p>
+          <p><strong>Rating:</strong> ${item.rating} star${item.rating > 1 ? 's' : ''}</p>
+          <button class="delete-button" onclick="deleteUploadedContent(${index})">Delete</button>
+        `;
+
+        container.appendChild(itemDiv);
+      });
+    };
+
+    // Function to delete a specific uploaded content
+    function deleteUploadedContent(index) {
+      let uploadedItems = JSON.parse(localStorage.getItem('uploadedItems')) || [];
+      uploadedItems.splice(index, 1);
+      localStorage.setItem('uploadedItems', JSON.stringify(uploadedItems));
+
+      // Reload the page to refresh the displayed items
+      window.location.reload();
+    }
+  </script>
+</body>
+</html>

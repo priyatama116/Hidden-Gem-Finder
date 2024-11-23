@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compose - Hidden Gem Finder</title>
+  <link rel="stylesheet" href="styles compose restoran.css">
+</head>
+<body>
+  <div class="compose-container">
+    <h1>Share Your Hidden Gem!</h1>
+    <p>Fill out the details below to share your favorite food spot!</p>
+    <form id="composeForm">
+      <div class="form-group">
+        <label for="objectImage">Upload Restaurant Image</label>
+        <input type="file" id="objectImage" accept="image/*">
+      </div>
+      <div class="form-group">
+        <label for="objectName">Restaurant Name</label>
+        <input type="text" id="objectName" placeholder="e.g., Grandma's Kitchen">
+      </div>
+      <div class="form-group">
+        <label for="objectLocation">Location</label>
+        <input type="text" id="objectLocation" placeholder="e.g., Downtown, City">
+      </div>
+      <div class="form-group">
+        <label>Rating</label>
+        <div class="rating">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+      </div>
+      <button type="button" class="post-button" onclick="submitForm()">Share</button>
+    </form>
+    <p id="ratingValue" class="rating-display">Rating: 0 stars</p>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
+
+  <script>
+    const stars = document.querySelectorAll('.star');
+    let rating = 0;
+
+    stars.forEach((star, index) => {
+      star.addEventListener('click', () => {
+        rating = index + 1;
+        updateRatingDisplay();
+      });
+
+      star.addEventListener('mouseover', () => {
+        highlightStars(index + 1);
+      });
+
+      star.addEventListener('mouseout', () => {
+        highlightStars(rating);
+      });
+    });
+
+    function highlightStars(count) {
+      stars.forEach((star, index) => {
+        star.classList.toggle('selected', index < count);
+      });
+    }
+
+    function updateRatingDisplay() {
+      document.getElementById('ratingValue').textContent = `Rating: ${rating} star${rating > 1 ? 's' : ''}`;
+    }
+
+    function submitForm() {
+      const objectImage = document.getElementById('objectImage').files[0];
+      const objectName = document.getElementById('objectName').value;
+      const objectLocation = document.getElementById('objectLocation').value;
+
+      if (objectImage) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const imageData = event.target.result;
+
+          // Retrieve or initialize uploadedItems array
+          const uploadedItems = JSON.parse(localStorage.getItem('uploadedItems')) || [];
+
+          // Add new item to the array
+          uploadedItems.push({
+            name: objectName,
+            location: objectLocation,
+            rating: rating,
+            image: imageData
+          });
+
+          // Save the updated array in localStorage
+          localStorage.setItem('uploadedItems', JSON.stringify(uploadedItems));
+
+          // Redirect to the main page
+          window.location.href = "index.html";
+        };
+        reader.readAsDataURL(objectImage);
+      } else {
+        alert("Please select an image.");
+      }
+    }
+  </script>
+</body>
+</html>
