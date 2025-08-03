@@ -23,6 +23,10 @@
         <label for="objectLocation">Location</label>
         <input type="text" id="objectLocation" placeholder="e.g., Downtown, City">
       </div>
+      <div class="form-group">
+        <label for="objectReview">Location</label>
+        <input type="text" id="objectReview">
+      </div>
       <div class="rating">
           <span class="star" data-value="1">★</span>
           <span class="star" data-value="2">★</span>
@@ -73,6 +77,7 @@
       const objectImage = document.getElementById('objectImage').files[0];
       const objectName = document.getElementById('objectName').value;
       const objectLocation = document.getElementById('objectLocation').value;
+      const objectReview = document.getElementById('objectReview').value;
 
       if (objectImage) {
         const reader = new FileReader();
@@ -86,6 +91,7 @@
           uploadedItems.push({
             name: objectName,
             location: objectLocation,
+            Review: objectReview,
             rating: rating,
             image: imageData
           });
@@ -104,3 +110,4 @@
   </script>
 </body>
 </html>
+
